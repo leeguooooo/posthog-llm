@@ -186,6 +186,7 @@ class NonCreatingViewSetMixin(mixins.CreateModelMixin):
 
 
 class LoginViewSet(NonCreatingViewSetMixin, viewsets.GenericViewSet):
+    print(" Login view set 日志 ========================================================")
     queryset = User.objects.none()
     serializer_class = LoginSerializer
     permission_classes = (permissions.AllowAny,)
