@@ -246,6 +246,7 @@ class TwoFactorViewSet(NonCreatingViewSetMixin, viewsets.GenericViewSet):
 
 
 class LoginPrecheckViewSet(NonCreatingViewSetMixin, viewsets.GenericViewSet):
+    print(" 登录信息检测 =======================================")
     queryset = User.objects.none()
     serializer_class = LoginPrecheckSerializer
     permission_classes = (permissions.AllowAny,)
