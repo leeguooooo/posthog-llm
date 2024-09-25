@@ -284,6 +284,7 @@ def render_template(
     """
 
     template = get_template(template_name)
+    logger.warning(f"Template name ===========: {template_name}")
 
     context["opt_out_capture"] = settings.OPT_OUT_CAPTURE
     context["self_capture"] = settings.SELF_CAPTURE
@@ -333,6 +334,8 @@ def render_template(
         "year_in_hog_url": year_in_hog_url,
     }
 
+    logger.warning(f"PostHog Request User==========: {request.user}")
+
     posthog_bootstrap: Dict[str, Any] = {}
     posthog_distinct_id: Optional[str] = None
 
@@ -380,11 +383,17 @@ def render_template(
                 posthog_app_context["default_event_name"] = get_default_event_name(user.team)
 
     context["posthog_app_context"] = json.dumps(posthog_app_context, default=json_uuid_convert)
+    # Log the posthog_app_context and user's login status for debugging
+    logger.warning(f"PostHog App Context==========: {posthog_app_context}")
+    logger.warning(f"User logged in ===========: {request.user.is_authenticated}")
 
     if posthog_distinct_id:
         groups = {}
         group_properties = {}
         person_properties = {}
+        logger.warning(f"PostHog Distinct ID==========: {posthog_distinct_id}")
+        logger.warning(f"PostHog User Email==========: {request.user.email}")
+        logger.warning(f"PostHog User Authenticated==========: {request.user.is_authenticated}")
         if request.user and request.user.is_authenticated:
             user = cast("User", request.user)
             person_properties["email"] = user.email
@@ -413,6 +422,7 @@ def render_template(
 
     context["posthog_js_uuid_version"] = settings.POSTHOG_JS_UUID_VERSION
 
+    logger.warning(f"Context==========: {context}")
     html = template.render(context, request=request)
     return HttpResponse(html)
 
