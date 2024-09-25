@@ -171,6 +171,9 @@ class LoginSerializer(serializers.Serializer):
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         logger.warning(f"用户 {user.email} 成功登录")
 
+        # 打印 user 的信息
+        logger.warning(f"用户信息：{user.__dict__}")
+
         # 报告用户登录
         report_user_logged_in(user, social_provider="")
         return user
