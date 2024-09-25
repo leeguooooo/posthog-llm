@@ -185,6 +185,8 @@ class LoginPrecheckSerializer(serializers.Serializer):
     def create(self, validated_data: Dict[str, str]) -> Any:
         email = validated_data.get("email", "")
         # TODO: Refactor methods below to remove duplicate queries
+        print(f"========檢測郵件：{email}")
+        logger.info(f"========檢測郵件： {email} ")
         return {
             "sso_enforcement": OrganizationDomain.objects.get_sso_enforcement_for_email_address(email),
             "saml_available": OrganizationDomain.objects.get_is_saml_available_for_email(email),
