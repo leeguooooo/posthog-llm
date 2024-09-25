@@ -122,7 +122,7 @@ class LoginSerializer(serializers.Serializer):
 
     def create(self, validated_data: Dict[str, str]) -> Any:
         request = self.context["request"]
-        logger.info(f"用户尝试登录，邮箱：{validated_data['email']}")
+        logger.warning(f"用户尝试登录，邮箱：{validated_data['email']}")
 
         # 检查 SSO 强制要求（在域级别执行）
         sso_enforcement = OrganizationDomain.objects.get_sso_enforcement_for_email_address(validated_data["email"])
@@ -147,11 +147,11 @@ class LoginSerializer(serializers.Serializer):
             logger.warning(f"邮箱 {validated_data['email']} 的登录凭据无效")
             raise serializers.ValidationError("Invalid email or password.", code="invalid_credentials")
 
-        logger.info(f"用户 {user.email} 成功通过身份验证")
+        logger.warning(f"用户 {user.email} 成功通过身份验证")
 
         # 检查是否启用了邮箱验证，并且邮箱未通过验证
         if is_email_available() and user.is_email_verified is not True:
-            logger.info(f"为用户 {user.email} 发送邮件验证")
+            logger.warning(f"为用户 {user.email} 发送邮件验证")
             EmailVerifier.create_token_and_send_email_verification(user)
             if user.is_email_verified is False:
                 logger.warning(f"用户 {user.email} 尚未验证其邮箱")
@@ -162,14 +162,14 @@ class LoginSerializer(serializers.Serializer):
 
         # 检查用户是否需要 2FA
         if self._check_if_2fa_required(user):
-            logger.info(f"用户 {user.email} 需要进行 2FA 验证")
+            logger.warning(f"用户 {user.email} 需要进行 2FA 验证")
             request.session["user_authenticated_but_no_2fa"] = user.pk
             request.session["user_authenticated_time"] = time.time()
             raise TwoFactorRequired()
 
         # 登录用户
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
-        logger.info(f"用户 {user.email} 成功登录")
+        logger.warning(f"用户 {user.email} 成功登录")
 
         # 报告用户登录
         report_user_logged_in(user, social_provider="")
