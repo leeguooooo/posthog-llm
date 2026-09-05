@@ -1,6 +1,10 @@
+# Dependabot is disabled on purpose.
+#
+# This repository is a mirror of an upstream project. Nothing is released from
+# here, so dependency bumps opened against it are never merged — they only bury
+# real pull requests. Dependency updates belong upstream.
+#
+# An empty `updates` list is the documented way to keep the file (and this
+# explanation) in place while scheduling no update runs.
 version: 2
-updates:
-    - package-ecosystem: 'github-actions'
-      directory: '/'
-      schedule:
-          interval: weekly
+updates: []
