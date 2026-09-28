@@ -108,7 +108,7 @@ jobs:
         runs-on: ubuntu-22.04
         steps:
             - name: Fetch wheels
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v8
               with:
                   name: artifact
                   path: dist/
