@@ -1,10 +1,15 @@
-# Dependabot is disabled on purpose.
+# Dependabot version updates are disabled on purpose.
 #
-# This repository is a mirror of an upstream project. Nothing is released from
-# here, so dependency bumps opened against it are never merged — they only bury
-# real pull requests. Dependency updates belong upstream.
+# This repository is an inactive fork of PostHog. Nothing is deployed or
+# released from here, so dependency bumps opened against it are never merged;
+# dependency updates are taken from upstream.
 #
-# An empty `updates` list is the documented way to keep the file (and this
-# explanation) in place while scheduling no update runs.
+# `open-pull-requests-limit: 0` is the documented way to stop version-update
+# PRs. An earlier `updates: []` did not stop the runs.
 version: 2
-updates: []
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
